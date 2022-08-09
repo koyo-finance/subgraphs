@@ -1,0 +1,35 @@
+specVersion: 0.0.6
+description: Kōyō Finance Momiji CoW subgraph
+repository: https://github.com/koyo-finance/subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: GPV2Settlement
+    network: {{ network }}
+    source:
+      address: '{{ momiji.settlement.address }}'
+      abi: GPV2Settlement
+      startBlock: {{ momiji.settlement.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Trade
+        - Token
+        - Order
+        - User
+      abis:
+        - name: GPV2Settlement
+          file: ./node_modules/abi/Momiji/GPV2Settlement.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+      eventHandlers:
+        - event: OrderInvalidated(indexed address,bytes)
+          handler: handleOrderInvalidated
+        - event: PreSignature(indexed address,bytes,bool)
+          handler: handlePreSignature
+        - event: Trade(indexed address,address,address,uint256,uint256,uint256,bytes)
+          handler: handleTrade
+      file: ./src/mapping.ts

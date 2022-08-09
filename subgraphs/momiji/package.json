@@ -1,0 +1,23 @@
+{
+	"name": "momiji",
+	"repository": {
+		"url": "koyo-finance/subgraphs",
+		"directory": "subgraphs/momiji"
+	},
+	"files": [
+		"generated"
+	],
+	"scripts": {
+		"generate": "mustache ../../config/$NETWORK.js template.yaml > subgraph.yaml && graph codegen",
+		"build": "graph build",
+		"test": "graph test -r",
+		"deploy": "graph deploy --node https://api.thegraph.com/deploy/ koyo-finance/momiji",
+		"create-local": "graph create --node http://localhost:8020/ koyo-finance/momiji",
+		"remove-local": "graph remove --node http://localhost:8020/ koyo-finance/momiji",
+		"deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 koyo-finance/momiji",
+		"deploy-boba": "graph deploy --product hosted-service koyo-finance/momiji-boba"
+	},
+	"dependencies": {
+		"abi": "workspace:^0.0.0"
+	}
+}

@@ -20,3 +20,8 @@ coverage/
 build/
 generated/
 
+.pnpm-debug.log
+.turbo/
+
+subgraph.yaml
+
