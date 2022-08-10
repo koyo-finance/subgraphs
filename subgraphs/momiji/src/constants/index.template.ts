@@ -12,6 +12,8 @@ export const {{symbol}}: Address = Address.fromString('{{address}}');
 export const PRICING_ASSETS: Address[] = [{{#assets.pricing}}{{.}},{{/assets.pricing}}];
 export const USD_STABLE_ASSETS: Address[] = [{{#assets.stable}}{{.}},{{/assets.stable}}];
 
+export const DEFAULT_DECIMALS = 18;
+
 export const MIN_POOL_LIQUIDITY = BigDecimal.fromString("10");
 
 export const ZERO = BigInt.fromI32(0);

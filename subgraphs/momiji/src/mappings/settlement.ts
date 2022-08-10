@@ -1,14 +1,17 @@
 import { BigDecimal, dataSource } from '@graphprotocol/graph-ts';
 import { OrderInvalidated, PreSignature, Trade } from '../../generated/GPV2Settlement/GPV2Settlement';
 import { tokenToDecimal } from '../helpers/token';
-import { orders, tokens, trades, users } from '../modules';
+import { getOrCreateOrderForTrade, invalidateOrder, setPresignature } from '../services/orders';
 import { getTokenPriceInEth, getTokenPriceInUsd } from '../services/pricing';
+import { getOrCreateToken } from '../services/tokens';
+import { getOrCreateTrade } from '../services/trades';
+import { getOrCreateSigner } from '../services/users';
 
 export function handleOrderInvalidated(event: OrderInvalidated): void {
 	const orderId = event.params.orderUid.toHexString();
 	const timestamp = event.block.timestamp.toI32();
 
-	const order = orders.invalidateOrder(orderId, timestamp);
+	const order = invalidateOrder(orderId, timestamp);
 
 	order.save();
 }
@@ -20,11 +23,11 @@ export function handlePreSignature(event: PreSignature): void {
 	const timestamp = event.block.timestamp.toI32();
 	const signed = event.params.signed;
 
-	const order = orders.setPresignature(orderUid, owner, timestamp, signed);
+	const order = setPresignature(orderUid, owner, timestamp, signed);
 
 	order.save();
 
-	users.getOrCreateSigner(owner, ownerAddress);
+	getOrCreateSigner(owner, ownerAddress);
 }
 
 export function handleTrade(event: Trade): void {
@@ -39,8 +42,8 @@ export function handleTrade(event: Trade): void {
 
 	const timestamp = event.block.timestamp.toI32();
 
-	const sellToken = tokens.getOrCreateToken(sellTokenAddress, timestamp);
-	const buyToken = tokens.getOrCreateToken(buyTokenAddress, timestamp);
+	const sellToken = getOrCreateToken(sellTokenAddress, timestamp);
+	const buyToken = getOrCreateToken(buyTokenAddress, timestamp);
 
 	const tokenCurrentSellAmount = sellToken.totalVolume;
 	const tokenCurrentBuyAmount = buyToken.totalVolume;
@@ -97,12 +100,12 @@ export function handleTrade(event: Trade): void {
 
 	// this call need to go after price update
 	// it uses the prices of each token calculated above.
-	trades.getOrCreateTrade(event, buyToken, sellToken);
+	getOrCreateTrade(event, buyToken, sellToken);
 
 	sellToken.save();
 	buyToken.save();
 
-	const order = orders.getOrCreateOrderForTrade(orderId, timestamp, owner);
+	const order = getOrCreateOrderForTrade(orderId, timestamp, owner);
 
 	sellToken.save();
 	buyToken.save();
