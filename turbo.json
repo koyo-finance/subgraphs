@@ -2,7 +2,8 @@
 	"$schema": "https://turborepo.org/schema.json",
 	"pipeline": {
 		"generate": {
-			"outputs": ["generated", "subgraph.yaml", "src/constants/index.ts"]
+			"outputs": ["generated", "subgraph.yaml", "src/constants/index.ts"],
+			"dependsOn": ["$NETWORK"]
 		},
 		"build": {
 			"outputs": ["build/**"],

@@ -5,6 +5,7 @@
 		"packages/*",
 		"subgraphs/*"
 	],
+	"main": "./bin/index.js",
 	"bin": {
 		"subgraph-cli": "./bin/index.js"
 	},

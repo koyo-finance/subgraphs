@@ -36,6 +36,7 @@ program
 	.command('log')
 	.arguments('<subgraphName>')
 	.option('-v, --version <version>', 'Which version to get logs for', 'pending')
+	// eslint-disable-next-line @typescript-eslint/default-param-last
 	.action((subgraphName = 'koyo-finance/momiji', options) => {
 		const method = {
 			current: 'indexingStatusForCurrentVersion',
