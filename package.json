@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@graphprotocol/graph-cli": "^0.33.0",
 		"@graphprotocol/graph-ts": "^0.27.0",
+		"@protofire/subgraph-toolkit": "^0.1.2",
 		"@sapphire/eslint-config": "^4.3.4",
 		"@sapphire/prettier-config": "^1.4.3",
 		"@sapphire/ts-config": "^3.3.4",

@@ -1,9 +1,8 @@
-import { BigDecimal, BigInt, dataSource } from '@graphprotocol/graph-ts';
+import { BigDecimal, dataSource } from '@graphprotocol/graph-ts';
 import { OrderInvalidated, PreSignature, Trade } from '../generated/GPV2Settlement/GPV2Settlement';
+import { tokenToDecimal } from './helpers/token';
 import { orders, tokens, trades, users } from './modules';
-import { convertTokenToDecimal } from './utils';
-import { MINUS_ONE_BD } from './utils/constants';
-import { getPrices } from './utils/getPrices';
+import { getTokenPriceInEth, getTokenPriceInUsd } from './services/pricing';
 
 export function handleOrderInvalidated(event: OrderInvalidated): void {
 	const orderId = event.params.orderUid.toHexString();
@@ -19,7 +18,7 @@ export function handlePreSignature(event: PreSignature): void {
 	const ownerAddress = event.params.owner;
 	const owner = ownerAddress.toHexString();
 	const timestamp = event.block.timestamp.toI32();
-	const { signed } = event.params;
+	const signed = event.params.signed;
 
 	const order = orders.setPresignature(orderUid, owner, timestamp, signed);
 
@@ -34,8 +33,8 @@ export function handleTrade(event: Trade): void {
 	const owner = ownerAddress.toHexString();
 	const sellTokenAddress = event.params.sellToken;
 	const buyTokenAddress = event.params.buyToken;
-	const { sellAmount } = event.params;
-	const { buyAmount } = event.params;
+	const sellAmount = event.params.sellAmount;
+	const buyAmount = event.params.buyAmount;
 	const network = dataSource.network();
 
 	const timestamp = event.block.timestamp.toI32();
@@ -49,16 +48,17 @@ export function handleTrade(event: Trade): void {
 	sellToken.totalVolume = tokenCurrentSellAmount.plus(sellAmount);
 	buyToken.totalVolume = tokenCurrentBuyAmount.plus(buyAmount);
 
-	const sellTokenPrices = getPrices(sellTokenAddress);
-	const buyTokenPrices = getPrices(buyTokenAddress);
-	if (sellTokenPrices.get('usd') != MINUS_ONE_BD && sellTokenPrices.get('eth') != MINUS_ONE_BD) {
-		sellToken.priceUsd = sellTokenPrices.get('usd');
-		sellToken.priceEth = sellTokenPrices.get('eth');
-	}
-	if (buyTokenPrices.get('usd') != MINUS_ONE_BD && buyTokenPrices.get('eth') != MINUS_ONE_BD) {
-		buyToken.priceUsd = buyTokenPrices.get('usd');
-		buyToken.priceEth = buyTokenPrices.get('eth');
-	}
+	const sellTokenPriceUsd = getTokenPriceInUsd(sellTokenAddress);
+	const buyTokenPriceUsd = getTokenPriceInUsd(buyTokenAddress);
+
+	if (sellTokenPriceUsd) sellToken.priceUsd = sellTokenPriceUsd;
+	if (buyTokenPriceUsd) buyToken.priceUsd = buyTokenPriceUsd;
+
+	const sellTokenPriceEth = getTokenPriceInEth(sellTokenAddress);
+	const buyTokenPrice = getTokenPriceInEth(buyTokenAddress);
+
+	if (sellTokenPriceEth) sellToken.priceEth = sellTokenPriceEth;
+	if (buyTokenPrice) buyToken.priceEth = buyTokenPrice;
 
 	const buyPrevNumberOfTrades = buyToken.numberOfTrades;
 	buyToken.numberOfTrades = buyPrevNumberOfTrades + 1;
@@ -71,8 +71,8 @@ export function handleTrade(event: Trade): void {
 	const sellTokenPrevTotalVolumeUsd = sellToken.totalVolumeUsd;
 	const sellTokenPrevTotalVolumeEth = sellToken.totalVolumeEth;
 
-	const buyCurrentAmountDecimals = convertTokenToDecimal(buyAmount, BigInt.fromI32(buyToken.decimals));
-	const sellCurrentAmountDecimals = convertTokenToDecimal(sellAmount, BigInt.fromI32(sellToken.decimals));
+	const buyCurrentAmountDecimals = tokenToDecimal(buyAmount, buyToken.decimals);
+	const sellCurrentAmountDecimals = tokenToDecimal(sellAmount, sellToken.decimals);
 
 	if (buyToken.priceUsd) {
 		const buyTokenPriceUsd = buyToken.priceUsd as BigDecimal;

@@ -1,3 +1,4 @@
 {
-	"extends": "./node_modules/assemblyscript/std/assembly"
+	"extends": "./node_modules/assemblyscript/std/assembly",
+	"exclude": ["**/*.template.js", "**/*.template.ts"]
 }

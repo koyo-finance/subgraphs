@@ -24,4 +24,5 @@ generated/
 .turbo/
 
 subgraph.yaml
+**/constants/index.ts
 

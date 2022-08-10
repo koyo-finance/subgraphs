@@ -284,3 +284,161 @@ type TokenTradingEvent @entity {
 	"Amount in Usd"
 	amountUsd: BigDecimal
 }
+
+type Pair @entity {
+	"Token0-token1 sorted by token0 < token1"
+	id: ID!
+	"The token 0 address lower than token1"
+	token0: Token!
+	"The token 1 address greater than token0"
+	token1: Token!
+	"Last trade timestamp"
+	lastTradeTimestamp: Int!
+	"Token0 last trade price in USD"
+	token0Usd: BigDecimal
+	"Token1 last trade price in USD"
+	token1Usd: BigDecimal
+	"Token 0 price expressed in token1 in the last trade"
+	token0PriceInToken1: BigDecimal
+	"Token 1 price expressed in token1 in the last trade"
+	token1PriceInToken0: BigDecimal
+	"Total volume of token 0 traded"
+	volumeToken0: BigInt!
+	"Total volume of token 1 traded"
+	volumeToken1: BigInt!
+	"Total volume in Eth"
+	volumeTradedEth: BigDecimal
+	"Total volume in Usd"
+	volumeTradedUsd: BigDecimal
+}
+
+type PairDaily @entity {
+	"token0-token1-timestamp sorted by token0 < token1"
+	id: ID!
+	"The token 0 address lower than token1"
+	token0: Token!
+	"The token 1 address greater than token0"
+	token1: Token!
+	"Token0 last trade price in USD"
+	token0Usd: BigDecimal
+	"Token1 last trade price in USD"
+	token1Usd: BigDecimal
+	"Token 0 price expressed in token1 in the last trade"
+	token0PriceInToken1: BigDecimal
+	"Token 1 price expressed in token1 in the last trade"
+	token1PriceInToken0: BigDecimal
+	"Start day timestamp"
+	timestamp: Int!
+	"Total volume of token 0 traded"
+	volumeToken0: BigInt!
+	"Total volume of token 1 traded"
+	volumeToken1: BigInt!
+	"Total volume in Eth"
+	volumeTradedEth: BigDecimal
+	"Total volume in Usd"
+	volumeTradedUsd: BigDecimal
+}
+
+type PairHourly @entity {
+	"token0-token1-timestamp sorted by token0 < token1"
+	id: ID!
+	"The token 0 address lower than token1"
+	token0: Token!
+	"The token 1 address greater than token0"
+	token1: Token!
+	"Token0 last trade price in USD"
+	token0Usd: BigDecimal
+	"Token1 last trade price in USD"
+	token1Usd: BigDecimal
+	"Token 0 price expressed in token1 in the last trade"
+	token0PriceInToken1: BigDecimal
+	"Token 1 price expressed in token1 in the last trade"
+	token1PriceInToken0: BigDecimal
+	"Start hour timestamp"
+	timestamp: Int!
+	"Total volume of token 0 traded"
+	volumeToken0: BigInt!
+	"Total volume of token 1 traded"
+	volumeToken1: BigInt!
+	"Total volume in Eth"
+	volumeTradedEth: BigDecimal
+	"Total volume in Usd"
+	volumeTradedUsd: BigDecimal
+}
+
+type KoyoPool @entity {
+    id: ID!
+    address: Bytes!
+    poolType: String
+    factory: Bytes
+    strategyType: Int!
+    symbol: String
+    name: String
+
+    totalWeight: BigDecimal
+    totalLiquidity: BigDecimal!
+    totalShares: BigDecimal!
+
+    totalSharesRaw: BigInt!
+
+    tx: Bytes
+
+    tokensList: [Bytes!]!
+
+    # StablePool Only
+    amp: BigInt
+}
+
+type KoyoPoolToken @entity {
+    id: ID!
+    poolId: KoyoPool!
+    token: Token!
+    symbol: String!
+    name: String!
+    decimals: Int!
+    address: String!
+    priceRate: BigDecimal!
+    balance: BigDecimal!
+    balanceRaw: BigInt!
+    invested: BigDecimal!
+
+    # WeightedPool Only
+    weight: BigDecimal
+}
+
+type KoyoToken @entity {
+    id: ID!
+    symbol: String
+    name: String
+    decimals: Int!
+    address: String!
+    totalBalanceUSD: BigDecimal! # total balance of tokens across balancer
+    totalBalanceNotional: BigDecimal!
+    totalVolumeUSD: BigDecimal! # total volume in fiat (usd)
+    totalVolumeNotional: BigDecimal!
+    totalSwapCount: BigInt!
+    latestPrice: KoyoLatestPrice # latest price of token, updated when pool liquidity changes
+}
+
+type KoyoTokenPrice @entity {
+    id: ID! # address of token + address of stablecoin-poolId
+    poolId: KoyoPool!
+    asset: Bytes!
+    amount: BigDecimal!
+    " Address of stable asset "
+    pricingAsset: Bytes!
+    price: BigDecimal!
+    priceUSD: BigDecimal!
+    block: BigInt!
+    timestamp: Int!
+}
+
+type KoyoLatestPrice @entity {
+    id: ID!
+    asset: Bytes!
+    pricingAsset: Bytes! # address of stable asset
+    poolId: KoyoPool! # last pool which set price
+    price: BigDecimal! # all the latest prices
+    priceUSD: BigDecimal!
+    block: BigInt! # last block that prices were updated
+}

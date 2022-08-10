@@ -8,8 +8,8 @@ dataSources:
     name: GPV2Settlement
     network: {{ network }}
     source:
-      address: '{{ momiji.settlement.address }}'
       abi: GPV2Settlement
+      address: '{{ momiji.settlement.address }}'
       startBlock: {{ momiji.settlement.startBlock }}
     mapping:
       kind: ethereum/events
@@ -33,3 +33,32 @@ dataSources:
         - event: Trade(indexed address,address,address,uint256,uint256,uint256,bytes)
           handler: handleTrade
       file: ./src/mapping.ts
+  - name: Vault
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: Vault
+      address: '{{ koyo.vault.address }}'
+      startBlock: {{ koyo.vault.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault.ts
+      entities:
+        - Token
+        - LatestPrice
+      abis:
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+        - name: OracleWeightedPoolFactory
+          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+        - name: OracleWeightedPool
+          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+      eventHandlers:
+        - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
+          handler: handleSwapEvent

@@ -2,5 +2,21 @@
 	"extends": "@sapphire",
 	"parserOptions": {
 		"project": "./tsconfig.json"
-	}
+	},
+	"rules": {
+		"prefer-destructuring": "off",
+		"@typescript-eslint/ban-types": [
+			"error",
+			{
+				"types": {
+					"BigInt": false,
+					"bigint": {
+						"fixWith": "BigInt"
+					}
+				},
+				"extendDefaults": true
+			}
+		]
+	},
+	"ignorePatterns": ["**/*.template.js", "**/*.template.ts"]
 }
