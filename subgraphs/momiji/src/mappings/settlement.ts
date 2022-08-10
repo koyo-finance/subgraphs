@@ -1,8 +1,8 @@
 import { BigDecimal, dataSource } from '@graphprotocol/graph-ts';
-import { OrderInvalidated, PreSignature, Trade } from '../generated/GPV2Settlement/GPV2Settlement';
-import { tokenToDecimal } from './helpers/token';
-import { orders, tokens, trades, users } from './modules';
-import { getTokenPriceInEth, getTokenPriceInUsd } from './services/pricing';
+import { OrderInvalidated, PreSignature, Trade } from '../../generated/GPV2Settlement/GPV2Settlement';
+import { tokenToDecimal } from '../helpers/token';
+import { orders, tokens, trades, users } from '../modules';
+import { getTokenPriceInEth, getTokenPriceInUsd } from '../services/pricing';
 
 export function handleOrderInvalidated(event: OrderInvalidated): void {
 	const orderId = event.params.orderUid.toHexString();

@@ -15,6 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
+      file: ./src/mappings/settlement.ts
       entities:
         - Trade
         - Token
@@ -32,7 +33,6 @@ dataSources:
           handler: handlePreSignature
         - event: Trade(indexed address,address,address,uint256,uint256,uint256,bytes)
           handler: handleTrade
-      file: ./src/mapping.ts
   - name: Vault
     kind: ethereum/contract
     network: {{ network }}
