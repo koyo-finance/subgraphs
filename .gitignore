@@ -25,4 +25,5 @@ generated/
 
 subgraph.yaml
 **/constants/index.ts
+**/tests/.bin
 

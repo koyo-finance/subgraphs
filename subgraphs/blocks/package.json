@@ -18,6 +18,11 @@
 		"deploy-boba": "graph deploy --product hosted-service koyo-finance/boba-blocks"
 	},
 	"dependencies": {
-		"abi": "workspace:^0.0.0"
+		"abi": "workspace:^0.0.0",
+		"@graphprotocol/graph-cli": "^0.27.0",
+		"@graphprotocol/graph-ts": "^0.27.0",
+		"matchstick-as": "^0.4.0",
+		"assemblyscript": "^0.19.20",
+		"wabt": "1.0.24"
 	}
 }
