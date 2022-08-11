@@ -46,6 +46,15 @@ importers:
       typescript: 4.7.4
       wabt: 1.0.29
 
+  packages/abi:
+    specifiers: {}
+
+  subgraphs/blocks:
+    specifiers:
+      abi: workspace:^0.0.0
+    dependencies:
+      abi: link:../../packages/abi
+
   subgraphs/momiji:
     specifiers:
       abi: workspace:^0.0.0

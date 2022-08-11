@@ -1,0 +1,24 @@
+specVersion: 0.0.6
+description: Blocks
+repository: https://github.com/koyo-finance/subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: Vault
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: Vault
+      address: '{{ koyo.vault.address }}'
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/blocks.ts
+      entities:
+        - Blocks
+      abis:
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+      blockHandlers:
+        - handler: handleBlock
