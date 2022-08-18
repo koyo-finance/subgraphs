@@ -1,0 +1,214 @@
+specVersion: 0.0.6
+description: Subgraph for the Kōyō Finance Exchange.
+repository: https://github.com/koyo-finance/subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: Vault
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: Vault
+      address: '{{ koyo.vault.address }}'
+      startBlock: {{ koyo.vault.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/core.ts
+      entities:
+        - Koyo
+        - Account
+        - AccountInternalBalance
+        - TokenSnapshot
+        - KoyoSnapshot
+      abis:
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: OracleWeightedPoolFactory
+          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+        - name: OracleWeightedPool
+          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+      eventHandlers:
+        - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
+          handler: handleSwapEvent
+        - event: PoolBalanceChanged(indexed bytes32,indexed
+            address,address[],int256[],uint256[])
+          handler: handleBalanceChange
+        - event: InternalBalanceChanged(indexed address,indexed address,int256)
+          handler: handleInternalBalanceChange
+  - name: OracleWeightedPoolFactory
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: OracleWeightedPoolFactory
+      address: '{{ koyo.pools.factories.oracleWeighted.address }}'
+      startBlock: {{ koyo.pools.factories.oracleWeighted.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/oracleWeightedFactory.ts
+      entities:
+        - Koyo
+        - Pool
+      abis:
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: OracleWeightedPoolFactory
+          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+        - name: OracleWeightedPool
+          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+      eventHandlers:
+        - event: PoolCreated(indexed address)
+          handler: handleNewOracleWeightedPool
+  - name: WeightedPoolFactory
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: WeightedPoolFactory
+      address: '{{ koyo.pools.factories.weighted.address }}'
+      startBlock: {{ koyo.pools.factories.weighted.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/weightedFactory.ts
+      entities:
+        - Koyo
+        - Pool
+      abis:
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: WeightedPoolFactory
+          file: ./node_modules/abi/Koyo/WeightedPoolFactory.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+        - name: OracleWeightedPool
+          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+      eventHandlers:
+        - event: PoolCreated(indexed address)
+          handler: handleNewWeightedPool
+  - name: StablePoolFactory
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: StablePoolFactory
+      address: '{{ koyo.pools.factories.stable.address }}'
+      startBlock: {{ koyo.pools.factories.stable.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/stableFactory.ts
+      entities:
+        - Balancer
+        - Pool
+      abis:
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Vault.json
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: StablePoolFactory
+          file: ./node_modules/abi/Koyo/StablePoolFactory.json
+        - name: StablePool
+          file: ./node_modules/abi/Koyo/StablePool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+      eventHandlers:
+        - event: PoolCreated(indexed address)
+          handler: handleNewStablePool
+templates:
+  - name: OracleWeightedPool
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: OracleWeightedPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/oracleWeightedPool.ts
+      entities:
+        - Pool
+        - PoolShare
+        - Swap
+        - PoolToken
+      abis:
+        - name: OracleWeightedPool
+          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+        - name: BalancerPoolToken
+          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: SwapFeePercentageChanged(uint256)
+          handler: handleSwapFeePercentageChange
+  - name: WeightedPool
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: WeightedPool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/weightedPool.ts
+      entities:
+        - Pool
+        - PoolShare
+        - Swap
+        - PoolToken
+      abis:
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+        - name: BalancerPoolToken
+          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: SwapFeePercentageChanged(uint256)
+          handler: handleSwapFeePercentageChange
+  - name: StablePool
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: StablePool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/vault/pools/stablePool.ts
+      entities:
+        - Pool
+        - PoolShare
+        - Swap
+        - PoolToken
+      abis:
+        - name: StablePool
+          file: ./node_modules/abi/Koyo/StablePool.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/WeightedPool.json
+        - name: BalancerPoolToken
+          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: SwapFeePercentageChanged(uint256)
+          handler: handleSwapFeePercentageChange
+        - event: AmpUpdateStarted(uint256,uint256,uint256,uint256)
+          handler: handleAmpUpdateStarted
+        - event: AmpUpdateStopped(uint256)
+          handler: handleAmpUpdateStopped

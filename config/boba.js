@@ -18,6 +18,22 @@ module.exports = {
 		vault: {
 			address: '0x2A4409Cc7d2AE7ca1E3D915337D1B6Ba2350D6a3',
 			startBlock: 668337
+		},
+		pools: {
+			factories: {
+				oracleWeighted: {
+					address: '0x06f607EC266BB98bcb9Bae402D61Ab5E008ab018',
+					startBlock: 673576
+				},
+				weighted: {
+					address: '0xEa34bb7F24F3BB120DAF64Cd1BC9e958FFF9ED0c',
+					startBlock: 673848
+				},
+				stable: {
+					address: '0xb4455B572b4dBF39d76a10de530988803C13d854',
+					startBlock: 684091
+				}
+			}
 		}
 	},
 	momiji: {

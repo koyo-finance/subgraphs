@@ -1,0 +1,31 @@
+{
+	"name": "koyo-exchange",
+	"repository": {
+		"url": "koyo-finance/subgraphs",
+		"directory": "subgraphs/koyo-exchange"
+	},
+	"files": [
+		"generated"
+	],
+	"scripts": {
+		"generate": "mustache ../../config/$NETWORK.js template.yaml > subgraph.yaml && mustache ../../config/$NETWORK.js src/constants/index.template.ts > src/constants/index.ts && graph codegen",
+		"build": "graph build",
+		"deploy": "graph deploy --node https://api.thegraph.com/deploy/ koyo-finance/exchange-subgraph",
+		"create-local": "graph create --node http://localhost:8020/ koyo-finance/exchange-subgraph",
+		"remove-local": "graph remove --node http://localhost:8020/ koyo-finance/exchange-subgraph",
+		"deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 koyo-finance/exchange-subgraph",
+		"deploy-boba": "graph deploy --product hosted-service koyo-finance/exchange-subgraph-boba",
+		"deploy-aurora": "graph deploy --product hosted-service koyo-finance/exchange-subgraph-aurora",
+		"deploy-moonriver": "graph deploy --product hosted-service koyo-finance/exchange-subgraph-moonriver",
+		"deploy-matic": "graph deploy --product hosted-service koyo-finance/exchange-subgraph-matic",
+		"deploy-moonbeam": "graph deploy --product hosted-service koyo-finance/exchange-subgraph-moonbeam"
+	},
+	"dependencies": {
+		"abi": "workspace:^0.0.0",
+		"@graphprotocol/graph-cli": "^0.27.0",
+		"@graphprotocol/graph-ts": "^0.27.0",
+		"matchstick-as": "^0.4.0",
+		"assemblyscript": "^0.19.20",
+		"wabt": "1.0.24"
+	}
+}
