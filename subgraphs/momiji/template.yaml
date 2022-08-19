@@ -52,13 +52,13 @@ dataSources:
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
         - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
         - name: OracleWeightedPoolFactory
-          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPoolFactory.json
         - name: OracleWeightedPool
-          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
       eventHandlers:
         - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
           handler: handleSwapEvent

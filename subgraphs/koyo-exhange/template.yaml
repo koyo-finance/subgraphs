@@ -23,16 +23,16 @@ dataSources:
         - TokenSnapshot
         - KoyoSnapshot
       abis:
-        - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
         - name: OracleWeightedPoolFactory
-          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPoolFactory.json
         - name: OracleWeightedPool
-          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
       eventHandlers:
         - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
           handler: handleSwapEvent
@@ -57,16 +57,16 @@ dataSources:
         - Koyo
         - Pool
       abis:
-        - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
         - name: OracleWeightedPoolFactory
-          file: ./node_modules/abi/Koyo/OracleWeightedPoolFactory.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPoolFactory.json
         - name: OracleWeightedPool
-          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
       eventHandlers:
         - event: PoolCreated(indexed address)
           handler: handleNewOracleWeightedPool
@@ -86,16 +86,16 @@ dataSources:
         - Koyo
         - Pool
       abis:
-        - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
         - name: WeightedPoolFactory
-          file: ./node_modules/abi/Koyo/WeightedPoolFactory.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPoolFactory.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
         - name: OracleWeightedPool
-          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPool.json
       eventHandlers:
         - event: PoolCreated(indexed address)
           handler: handleNewWeightedPool
@@ -115,16 +115,16 @@ dataSources:
         - Balancer
         - Pool
       abis:
-        - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
         - name: ERC20
           file: ./node_modules/abi/ERC20/ERC20.json
+        - name: Vault
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
         - name: StablePoolFactory
-          file: ./node_modules/abi/Koyo/StablePoolFactory.json
+          file: ./node_modules/abi/Koyo/Exchange/StablePoolFactory.json
         - name: StablePool
-          file: ./node_modules/abi/Koyo/StablePool.json
+          file: ./node_modules/abi/Koyo/Exchange/StablePool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
       eventHandlers:
         - event: PoolCreated(indexed address)
           handler: handleNewStablePool
@@ -146,11 +146,11 @@ templates:
         - PoolToken
       abis:
         - name: OracleWeightedPool
-          file: ./node_modules/abi/Koyo/OracleWeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/OracleWeightedPool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
         - name: BalancerPoolToken
-          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+          file: ./node_modules/abi/Koyo/Exchange/BalancerPoolToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -173,9 +173,9 @@ templates:
         - PoolToken
       abis:
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
         - name: BalancerPoolToken
-          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+          file: ./node_modules/abi/Koyo/Exchange/BalancerPoolToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -198,11 +198,11 @@ templates:
         - PoolToken
       abis:
         - name: StablePool
-          file: ./node_modules/abi/Koyo/StablePool.json
+          file: ./node_modules/abi/Koyo/Exchange/StablePool.json
         - name: WeightedPool
-          file: ./node_modules/abi/Koyo/WeightedPool.json
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
         - name: BalancerPoolToken
-          file: ./node_modules/abi/Koyo/BalancerPoolToken.json
+          file: ./node_modules/abi/Koyo/Exchange/BalancerPoolToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer

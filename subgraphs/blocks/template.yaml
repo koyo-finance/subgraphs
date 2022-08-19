@@ -19,6 +19,6 @@ dataSources:
         - Blocks
       abis:
         - name: Vault
-          file: ./node_modules/abi/Koyo/Vault.json
+          file: ./node_modules/abi/Koyo/Exchange/Vault.json
       blockHandlers:
         - handler: handleBlock
