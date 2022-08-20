@@ -66,7 +66,7 @@ export function swapValueInUSD(tokenInAddress: Address, tokenAmountIn: BigDecima
 export function isUSDStable(asset: Address): boolean {
 	// eslint-disable-next-line @typescript-eslint/prefer-for-of
 	for (let i: i32 = 0; i < USD_STABLE_ASSETS.length; i++) {
-		if (USD_STABLE_ASSETS[i] == asset) return true;
+		if (USD_STABLE_ASSETS[i] === asset) return true;
 	}
 	return false;
 }

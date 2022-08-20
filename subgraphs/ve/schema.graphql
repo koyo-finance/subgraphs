@@ -1,0 +1,119 @@
+type Koyo @entity {
+    id: ID!
+
+    gauges: [Gauge!] @derivedFrom(field: "koyo")
+    " Number of gauges registered "
+    gaugeCount: BigInt!
+    " Number of gauge types registered "
+    gaugeTypeCount: BigInt!
+}
+
+type KoyoSnapshot @entity {
+    id: ID!
+    koyo: Koyo!
+    timestamp: Int!
+
+    gaugeCount: BigInt!
+    gaugeTypeCount: BigInt!
+}
+
+type Account @entity {
+    id: ID!
+    address: Bytes!
+
+    " Liquidity gauges this account contributed to "
+    gauges: [GaugeLiquidity!] @derivedFrom(field: "user")
+    "  "
+    gaugeWeightVotes: [GaugeWeightVote!] @derivedFrom(field: "user")
+}
+
+type Pool @entity {
+    id: ID!
+    address: Bytes!
+    symbol: String
+    name: String
+}
+
+type Gauge @entity {
+    id: ID!
+	koyo: Koyo!
+    address: Bytes!
+    type: GaugeType!
+    killed: Boolean!
+
+    pool: Pool
+
+    name: String!
+    symbol: String!
+
+    created: BigInt!
+    createdAtBlock: BigInt!
+    createdAtTransaction: Bytes!
+
+    weights: [GaugeWeight!] @derivedFrom(field: "gauge")
+
+    weightVotes: [GaugeWeightVote!] @derivedFrom(field: "gauge")
+}
+
+type GaugeWeight @entity {
+    id: ID!
+    gauge: Gauge!
+    time: BigInt!
+    weight: BigDecimal!
+}
+
+type GaugeWeightVote @entity {
+    id: ID!
+    gauge: Gauge!
+    user: Account!
+    time: BigInt!
+    weight: BigDecimal!
+}
+
+type GaugeType @entity {
+    id: ID!
+    name: String!
+    gaugeCount: BigInt!
+    gauges: [Gauge!] @derivedFrom(field: "type")
+    weights: [GaugeTypeWeight!] @derivedFrom(field: "type")
+}
+
+type GaugeTypeWeight @entity {
+    id: ID!
+    type: GaugeType!
+    time: BigInt!
+    weight: BigDecimal!
+}
+
+type GaugeTotalWeight @entity {
+    id: ID!
+    time: BigInt!
+    weight: BigDecimal!
+}
+
+type GaugeLiquidity @entity {
+    id: ID!
+    user: Account!
+    gauge: Gauge!
+    originalBalance: BigInt!
+    originalSupply: BigInt!
+    workingBalance: BigInt!
+    workingSupply: BigInt!
+    timestamp: BigInt!
+    block: BigInt!
+    transaction: Bytes!
+}
+
+type GaugeDeposit @entity {
+    id: ID!
+    gauge: Gauge!
+    provider: Account!
+    value: BigDecimal!
+}
+
+type GaugeWithdraw @entity {
+    id: ID!
+    gauge: Gauge!
+    provider: Account!
+    value: BigDecimal!
+}

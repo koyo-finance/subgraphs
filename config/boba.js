@@ -14,6 +14,14 @@ module.exports = {
 		pricing: ['WETH', 'USDC', 'DAI', 'BOBA', 'FRAX', 'USDT', 'KYO'],
 		stable: ['USDC', 'DAI', 'FRAX', 'USDT']
 	},
+	ve: {
+		guage: {
+			controller: {
+				address: '0xe8c8dbCcE7450B1100A5e416525B2F6C5F7eaDba',
+				startBlock: 653581
+			}
+		}
+	},
 	koyo: {
 		vault: {
 			address: '0x2A4409Cc7d2AE7ca1E3D915337D1B6Ba2350D6a3',

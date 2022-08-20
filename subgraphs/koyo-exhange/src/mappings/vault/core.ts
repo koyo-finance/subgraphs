@@ -309,7 +309,7 @@ function handlePoolExited(event: PoolBalanceChanged): void {
 	const liquidityProvider = getOrRegisterAccount(event.params.liquidityProvider);
 
 	const pool = Pool.load(poolId);
-	if (pool == null) {
+	if (pool === null) {
 		log.warning('Pool not found in handlePoolExited: {} {}', [poolId, transactionHash.toHexString()]);
 		return;
 	}

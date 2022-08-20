@@ -1,0 +1,27 @@
+{
+	"name": "ve",
+	"repository": {
+		"url": "koyo-finance/subgraphs",
+		"directory": "subgraphs/ve"
+	},
+	"files": [
+		"generated"
+	],
+	"scripts": {
+		"generate": "mustache ../../config/$NETWORK.js template.yaml > subgraph.yaml && mustache ../../config/$NETWORK.js src/constants/index.template.ts > src/constants/index.ts && graph codegen",
+		"build": "graph build",
+		"deploy": "graph deploy --node https://api.thegraph.com/deploy/ koyo-finance/ve",
+		"create-local": "graph create --node http://localhost:8020/ koyo-finance/ve",
+		"remove-local": "graph remove --node http://localhost:8020/ koyo-finance/ve",
+		"deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 koyo-finance/ve",
+		"deploy-boba": "graph deploy --product hosted-service koyo-finance/ve-boba"
+	},
+	"dependencies": {
+		"abi": "workspace:^0.0.0",
+		"@graphprotocol/graph-cli": "^0.27.0",
+		"@graphprotocol/graph-ts": "^0.27.0",
+		"matchstick-as": "^0.4.0",
+		"assemblyscript": "^0.19.20",
+		"wabt": "1.0.24"
+	}
+}

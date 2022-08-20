@@ -1,0 +1,65 @@
+specVersion: 0.0.6
+description: Subgraph for the Kōyō VotingEscrow and Gauges.
+repository: https://github.com/koyo-finance/subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: GaugeController
+    kind: ethereum/contract
+    network: boba
+    source:
+      abi: GaugeController
+      address: '{{ ve.guage.controller.address }}'
+      startBlock: {{ ve.guage.controller.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/gauges/controller.ts
+      abis:
+        - name: ERC20
+          file: ./node_modules/abi/ERC20/ERC20.json
+        - name: GaugeController
+          file: ./node_modules/abi/Koyo/GaugeController.json
+        - name: Gauge
+          file: ./node_modules/abi/Koyo/Gauge.json
+        - name: WeightedPool
+          file: ./node_modules/abi/Koyo/Exchange/WeightedPool.json
+      entities:
+        - Gauge
+        - GaugeType
+        - GaugeWeight
+        - GaugeWeightVote
+      eventHandlers:
+        - event: AddType(string,int128)
+          handler: handleAddType
+        - event: NewGauge(address,int128,uint256)
+          handler: handleNewGauge
+        - event: NewGaugeWeight(address,uint256,uint256,uint256)
+          handler: handleNewGaugeWeight
+        - event: NewTypeWeight(int128,uint256,uint256,uint256)
+          handler: handleNewTypeWeight
+        - event: VoteForGauge(uint256,address,address,uint256)
+          handler: handleVoteForGauge
+templates:
+  - name: Gauge
+    kind: ethereum/contract
+    network: {{ network }}
+    source:
+      abi: Gauge
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/gauges/gauge.ts
+      entities: []
+      abis:
+        - name: Gauge
+          file: ./node_modules/abi/Koyo/Gauge.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256)
+          handler: handleDeposit
+        - event: UpdateLiquidityLimit(address,uint256,uint256,uint256,uint256)
+          handler: handleUpdateLiquidityLimit
+        - event: Withdraw(indexed address,uint256)
+          handler: handleWithdraw
