@@ -52,7 +52,6 @@ export function handleAddType(event: AddType): void {
 export function handleNewGauge(event: NewGauge): void {
 	getOrRegisterKoyoSnapshot('1', event.block.timestamp.toI32());
 	const gaugeController = GaugeControllerContract.bind(event.address);
-	const gauge_ = GaugeContract.bind(event.params.addr);
 	const gaugeERC20Contract = ERC20Contract.bind(event.params.addr);
 	const nextWeek = nextPeriod(event.block.timestamp, WEEK);
 	// Get or register gauge type
@@ -67,6 +66,7 @@ export function handleNewGauge(event: NewGauge): void {
 
 	// Add gauge instance
 	const gauge = new Gauge(event.params.addr.toHexString());
+	gauge.koyo = findOrRegisterKoyo().id;
 	gauge.address = event.params.addr;
 	gauge.type = gaugeType.id;
 	gauge.killed = false;
