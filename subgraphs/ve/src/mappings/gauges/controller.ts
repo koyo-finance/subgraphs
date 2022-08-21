@@ -18,7 +18,7 @@ import { getOrRegisterAccount } from '../../services/accounts';
 import { getGaugeType, registerGaugeType } from '../../services/gauge-types';
 import { findOrRegisterKoyo } from '../../services/koyo';
 import { getOrRegisterKoyoSnapshot } from '../../services/koyo/snapshot';
-import { getPool } from '../../services/pool/pools';
+import { getOrRegisterPool } from '../../services/pool/pools';
 
 const WEEK = integer.fromNumber(604800);
 
@@ -87,7 +87,7 @@ export function handleNewGauge(event: NewGauge): void {
 		const poolIdTried = pool_.try_getPoolId();
 
 		if (!poolIdTried.reverted) {
-			const pool = getPool(poolIdTried.value.toHexString());
+			const pool = getOrRegisterPool(poolIdTried.value.toHexString());
 			if (pool) gauge.pool = pool.id;
 		}
 	}

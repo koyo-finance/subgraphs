@@ -7,7 +7,7 @@ export function getPool(poolId: string): Pool | null {
 }
 
 export function getOrRegisterPool(poolId: string): Pool {
-	let pool = Pool.load(poolId);
+	let pool = getPool(poolId);
 
 	if (pool === null) {
 		pool = new Pool(poolId);

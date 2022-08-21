@@ -9,6 +9,8 @@ import { ZERO_ADDRESS } from '@protofire/subgraph-toolkit';
 export const {{symbol}}: Address = Address.fromString('{{address}}');
 {{/.}}{{/assets.list}}
 
+export const USD: Address = {{assets.usdEquivalent}};
+
 export const PRICING_ASSETS: Address[] = [{{#assets.pricing}}{{.}},{{/assets.pricing}}];
 export const USD_STABLE_ASSETS: Address[] = [{{#assets.stable}}{{.}},{{/assets.stable}}];
 

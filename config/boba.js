@@ -2,7 +2,6 @@ module.exports = {
 	network: 'boba',
 	assets: {
 		list: [
-			{ symbol: 'USD', address: '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc' }, // USDC
 			{ symbol: 'WETH', address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000' },
 			{ symbol: 'KYO', address: '0x618CC6549ddf12de637d46CDDadaFC0C2951131C' },
 			{ symbol: 'BOBA', address: '0xa18bF3994C0Cc6E3b63ac420308E5383f53120D7' },
@@ -11,6 +10,7 @@ module.exports = {
 			{ symbol: 'USDC', address: '0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc' },
 			{ symbol: 'USDT', address: '0x5DE1677344D3Cb0D7D465c10b72A8f60699C062d' }
 		],
+		usdEquivalent: 'USDC',
 		pricing: ['WETH', 'USDC', 'DAI', 'BOBA', 'FRAX', 'USDT', 'KYO'],
 		stable: ['USDC', 'DAI', 'FRAX', 'USDT']
 	},
