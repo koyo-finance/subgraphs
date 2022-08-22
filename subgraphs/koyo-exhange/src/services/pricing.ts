@@ -99,6 +99,7 @@ export function updateLatestPrice(tokenPrice: TokenPrice): void {
 	}
 
 	latestPrice.block = tokenPrice.block;
+	latestPrice.timestamp = tokenPrice.timestamp;
 	latestPrice.poolId = tokenPrice.poolId;
 	latestPrice.price = tokenPrice.price;
 	latestPrice.priceUSD = tokenPrice.priceUSD;

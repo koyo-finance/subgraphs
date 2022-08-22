@@ -103,6 +103,7 @@ type LatestPrice @entity {
 	poolId: Pool! # last pool which set price
 	price: BigDecimal! # all the latest prices
 	priceUSD: BigDecimal!
+	timestamp: Int! # timestamp representing the start of day in UTC
 	block: BigInt! # last block that prices were updated
 }
 
